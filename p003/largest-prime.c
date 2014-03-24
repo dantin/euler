@@ -18,7 +18,7 @@ int main( void )
   l_list_node *factors = NULL;
   l_list_node *node = NULL;
 
-  primes = find_primes( 5000L );
+  primes = find_primes( 10000L );
   factors = find_factors( NUMBER, primes );
 
   while( primes ) {
