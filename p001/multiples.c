@@ -5,21 +5,16 @@
 #define THRESHOLD 1000
 
 int main( void ) {
-  long total = 0;
-  long a1, a2;
+  long i, total = 0;
 
-  a1 = NUM1;
-  while( a1 < THRESHOLD ) {
-    total += a1;
-    a1 += NUM1;
-  }
-
-  a2 = NUM2;
-  while( a2 < THRESHOLD ) {
-    if( a2 % NUM1 != 0 ) {
-      total += a2;
+  for( i = 1; i < THRESHOLD; i++ ) {
+    if( i % ( NUM1 * NUM2 ) == 0 ) { // multiples of both 3 and 5
+      total += i;
+    } else if( i % NUM1 == 0 ) { // multiples of 3 but not 5
+      total += i;
+    } else if( i % NUM2 == 0 ) { // multiples of 5 but not 3
+      total += i;
     }
-    a2 += NUM2;
   }
 
   printf( "%ld\n", total );
