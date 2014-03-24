@@ -1,125 +1,120 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
+#include <stdbool.h>
 
 #define NUMBER 600851475143L
+#define SCALE  2L
 
-typedef struct LongListNode {
+typedef struct ListNode {
   long long value;
-  struct LongListNode *next;
-} l_list_node;
+  struct ListNode *next;
+} list_node;
 
-l_list_node *find_primes( const long long number );
-l_list_node *find_factors( long long number, const l_list_node *primes );
+list_node *make_list_node( const long long value );
+void find_primes ( const long long low, const long long high, list_node **primes );
+long long find_factors( long long number, list_node **primes, list_node **factors );
+void delete_list( list_node **list );
 
 int main( void )
 {
-  l_list_node *primes = NULL;
-  l_list_node *factors = NULL;
-  l_list_node *node = NULL;
+  list_node *primes = NULL;
+  list_node *factors = NULL;
+  list_node *node = NULL;
+  long long low = 1L;
+  long long high = 2L;
+  long long number;
 
-  primes = find_primes( 10000L );
-  factors = find_factors( NUMBER, primes );
+  primes = make_list_node( 2L );
+  number = NUMBER;
 
-  while( primes ) {
-    node = primes;
-    primes = primes->next;
-    free( node );
+  while( number != 1 ) {
+    find_primes( low, high, &primes );
+    number = find_factors( number, &primes, &factors );
+    low = high;
+    high *= SCALE;
   }
 
+  long long max_prime_factor = 0L;
   while( factors ) {
-    node = factors;
-    printf( "%d\n", factors->value );
+    if( factors->value > max_prime_factor ) {
+      max_prime_factor = factors->value;
+    }
     factors = factors->next;
-    free( node );
   }
+  delete_list( &primes );
+  delete_list( &factors );
 
+  printf( "%ld\n", max_prime_factor );
+  
   return 0;
 }
 
-l_list_node *find_primes( const long long number )
+list_node *make_list_node( const long long value )
 {
-  l_list_node *primes, *node;
-  long i;
+  list_node *node = ( list_node * ) malloc( sizeof( list_node ) );
+  assert( node );
+  node->value = value;
+  node->next = NULL;
 
-  // list candidates
-  primes = NULL;
-  for( i = 2; i <= number; i++ ) {
-    if( i % 2 != 0 ) {
-      node = ( l_list_node * ) malloc ( sizeof( l_list_node ) );
-      assert( node );
-      node->next = primes;
-      node->value = i;
+  return node;
+}
 
-      primes = node;
+void find_primes( const long long low, const long long high, list_node **primes  )
+{
+  list_node *tail, *node;
+  long long i;
+
+  for( tail = *primes; tail && tail->next; tail = tail->next )
+    ;
+
+  for( i = low + 1; i <= high; i++ ) {
+    bool found = false;
+    for( node = *primes; node != NULL; node = node->next ) {
+      if( i % node->value == 0 ) {
+	found = true;
+	break;
+      }
+    }
+    if( !found ) {
+      tail->next = make_list_node( i );
+      tail = tail->next;
     }
   }
+}
 
-  // reverse candidate list
-  node = primes;
-  primes = NULL;
+long long find_factors( long long number, list_node **primes, list_node **factors )
+{
+  list_node *node = *primes;
   while( node ) {
-    l_list_node *temp = node->next;
-    node->next = primes;
-    primes = node;
-    node = temp;
-  }
-
-  // remove non-prime candidates
-  node = primes;
-  while( node ) {
-    l_list_node *pre = node;
-    l_list_node *cur = node->next;
-    while( cur ) {
-      if( cur->value % node->value == 0 ) {
-	pre->next = cur->next;
-	free( cur );
-	cur = pre->next;
+    while( number ) {
+      if( number % node->value == 0 ) {
+	number /= node->value;
+        list_node *temp = make_list_node( node->value );
+	temp->next = *factors;
+	*factors = temp;
       } else {
-	pre = cur;
-	cur = cur->next;
+	break;
       }
     }
     node = node->next;
   }
 
-  // add 2
-  node = ( l_list_node * ) malloc( sizeof( l_list_node ) );
-  assert( node );
-  node->value = 2L;
-  node->next = primes;
-  primes = node;
-
-  return primes;
+  return number;
 }
 
-l_list_node *find_factors( long long number, const l_list_node *primes )
+void delete_list( list_node **list )
 {
-  l_list_node *factors = NULL;
+  if( !list )
+    return;
 
-  while( primes ) {
-    while( number ) {
-      if( number % primes->value == 0 ) {
-	number /= primes->value;
-	l_list_node *node = ( l_list_node * ) malloc( sizeof( l_list_node ) );
-	assert( node );
-	node->value = primes->value;
-	node->next = factors;
-	factors = node;
-      } else {
-	break;
-      }
-    }
-    primes = primes->next;
+  list_node *temp, *node = *list;
+
+  while( node ) {
+    temp = node;
+    node = node->next;
+    free( temp );
   }
 
-  if( number ) {
-    l_list_node *node = ( l_list_node * ) malloc( sizeof( l_list_node ) );
-    assert( node );
-    node->value = number;
-    node->next = factors;
-    factors = node;
-  }
-
-  return factors;
+  *list = NULL;
 }
