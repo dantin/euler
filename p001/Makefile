@@ -1,7 +1,6 @@
 CC=gcc
-
+CFLAGS=-std=c99
 multiples: multiples.c
-	$(CC) -o multiples multiples.c
 
 .PHONY : clean
 clean:
