@@ -8,9 +8,17 @@ int main( void )
   long long factor, last_factor;
 
   number = NUMBER;
-  factor = 2;
-  last_factor = 1;
 
+  if( number % 2L == 0 ) {
+    last_factor = 2;
+    while( number % 2L == 0 ) {
+      number /= 2L;
+    }
+  } else {
+    last_factor = 1;
+  }
+
+  factor = 3L;
   while( number > 1 ) {
     if( number % factor == 0 ) {
       last_factor = factor;
@@ -19,7 +27,7 @@ int main( void )
 	number /= factor;
       }
     }
-    factor++;
+    factor += 2L;
   }
 
   printf( "%ld\n", last_factor );
