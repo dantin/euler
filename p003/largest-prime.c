@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 
 #define NUMBER 600851475143L
 
@@ -19,18 +20,25 @@ int main( void )
   }
 
   factor = 3L;
-  while( number > 1 ) {
+  long long max_factor = sqrt( number );
+
+  while( number > 1 && factor <= max_factor) {
     if( number % factor == 0 ) {
       last_factor = factor;
       number /= factor;
       while( number % factor == 0 ) {
 	number /= factor;
       }
+      max_factor = sqrt( number );
     }
     factor += 2L;
   }
 
-  printf( "%ld\n", last_factor );
+  if( number == 1 ) {
+    printf( "%ld\n", last_factor );
+  } else {
+    printf( "%ld\n", number );
+  }
   
   return 0;
 }
