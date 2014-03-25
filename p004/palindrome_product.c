@@ -13,9 +13,12 @@ int main( void )
   unsigned int i, j;
 
   unsigned int max = 0;
-  for( i = LOW; i < HIGH; i++ ) {
-    for( j = i; j < HIGH; j++ ) {
-      if( is_palindrome( i * j ) && i * j > max) {
+  for( i = HIGH - 1; i >= LOW; i-- ) {
+    for( j = HIGH - 1; j >= i; j-- ) {
+      if( i * j <= max ) {
+	break;
+      }
+      if( is_palindrome( i * j ) ) {
 	max = i * j;
       }
     }
