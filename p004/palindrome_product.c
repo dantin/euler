@@ -14,7 +14,16 @@ int main( void )
 
   unsigned int max = 0;
   for( i = HIGH - 1; i >= LOW; i-- ) {
-    for( j = HIGH - 1; j >= i; j-- ) {
+    unsigned int step;
+
+    if( i % 11 == 0 ) {
+      j = HIGH - 1;
+      step = 1;
+    } else {
+      j = 990;
+      step = 11;
+    }
+    for( ; j >= i; j -= step ) {
       if( i * j <= max ) {
 	break;
       }
