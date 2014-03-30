@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-std=c99 -lm
+CFLAGS=-std=c99 -Wall
 
 EXE=longest_collatz
 
