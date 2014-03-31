@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 #define BASE 2
-#define EXP  15
+#define EXP  1000
 
 typedef struct ListNode {
   int value;
@@ -11,21 +11,28 @@ typedef struct ListNode {
 } list_node;
 
 list_node *make_list_node( const int value );
-list_node *multiply( list_node **product, const int number );
+void multiply( list_node **product, const int number );
 list_node *reverse( list_node *list );
 void print( list_node *list );
+void delete_list( list_node **list );
 
 int main( void )
 {
-  list_node *product = NULL;
-  int i;
+  list_node *node, *product = NULL;
+  int i, sum;
 
   product = make_list_node( 1 );
 
-  for( i = 0; i < 15; i++ ) {
-    product = multiply( &product, BASE );
+  for( i = 0; i < EXP; i++ ) {
+    multiply( &product, BASE );
   }
-  print( product );
+
+  for( node = product, sum = 0; node; node = node->next ) {
+    sum += node->value;
+  }
+  delete_list( &product );
+
+  printf( "%d\n", sum );
 
   return 0;
 }
@@ -40,12 +47,31 @@ list_node *make_list_node( const int value )
   return node;
 }
 
-list_node *multiply( list_node **product, const int number )
+void multiply( list_node **product, const int number )
 {
-  list_node *list;
+  list_node *list, *tail, *node;
+  int remaining = 0;
 
+  tail = NULL;
   list = reverse( *product );
-  return list;
+  node = list;
+  while( node ) {
+    int n = node->value * number + remaining;
+    node->value = n % 10;
+    remaining = n / 10;
+
+    tail = node;
+    node = node->next;
+  }
+
+  while( remaining ) {
+    node = make_list_node( remaining % 10 );
+    tail->next = node;
+    tail = node;
+    remaining /= 10;
+  }
+
+  *product = reverse( list );
 }
 
 list_node *reverse( list_node *list )
@@ -70,4 +96,18 @@ void print( list_node *list ) {
   }
 
   printf( "\n" );
+}
+
+void delete_list( list_node **list )
+{
+  list_node *temp, *node;
+
+  node = *list;
+  while( node ) {
+    temp = node;
+    node = node->next;
+    free( temp );
+  }
+
+  *list = NULL;
 }
