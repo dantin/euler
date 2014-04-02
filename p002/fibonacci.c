@@ -7,14 +7,13 @@ int main( void )
   int sum = 0;
   int i, j, k;
 
-  i = 1;
-  j = 1;
-  k = i + j;
-  while( k < THRESHOLD ) {
+  i = 2;
+  j = 8;
+  sum = i + j;
+  while( ( k = i + 4 *j ) < THRESHOLD ) {
     sum += k;
-    i = j + k;
-    j = k + i;
-    k = i + j;
+    i = j;
+    j = k;
   }
 
   printf( "Sum even: %d\n", sum );
