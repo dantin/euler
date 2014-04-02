@@ -16,12 +16,6 @@ int main( void )
     j = k + i;
     k = i + j;
   }
-  /*
-  for( i = 1, j = 2, sum += j; ( k = i + j ) < THRESHOLD; i = j, j = k ) {
-    if( k % 2 == 0 ) {
-      sum += k;
-    }
-    }*/
 
   printf( "Sum even: %d\n", sum );
 
