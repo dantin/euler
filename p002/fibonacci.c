@@ -7,11 +7,21 @@ int main( void )
   int sum = 0;
   int i, j, k;
 
+  i = 1;
+  j = 1;
+  k = i + j;
+  while( k < THRESHOLD ) {
+    sum += k;
+    i = j + k;
+    j = k + i;
+    k = i + j;
+  }
+  /*
   for( i = 1, j = 2, sum += j; ( k = i + j ) < THRESHOLD; i = j, j = k ) {
     if( k % 2 == 0 ) {
       sum += k;
     }
-  }
+    }*/
 
   printf( "Sum even: %d\n", sum );
 
