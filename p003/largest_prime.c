@@ -6,39 +6,39 @@
 int main( void )
 {
   long long number;
-  long long factor, last_factor;
+  int factor, last_factor, limit;
 
   number = NUMBER;
 
-  if( number % 2L == 0 ) {
+  // handle 2 separatly
+  if( number % 2 == 0 ) {
     last_factor = 2;
-    while( number % 2L == 0 ) {
-      number /= 2L;
+    while( number % 2 == 0 ) {
+      number /= 2;
     }
   } else {
     last_factor = 1;
   }
 
-  factor = 3L;
-  long long max_factor = sqrt( number );
-
-  while( number > 1 && factor <= max_factor) {
+  factor = 3;
+  limit = sqrt( number ); // set limit of factor
+  while( number > 1 && factor <= limit ) {
     if( number % factor == 0 ) {
       last_factor = factor;
       number /= factor;
       while( number % factor == 0 ) {
 	number /= factor;
       }
-      max_factor = sqrt( number );
+      limit = sqrt( number ); // update limit
     }
-    factor += 2L;
+    factor += 2;
   }
-
-  if( number == 1 ) {
-    printf( "%ld\n", last_factor );
-  } else {
-    printf( "%ld\n", number );
+  // every number n can at most have one prime factor greater than n^(1/2)
+  if( number != 1 ) {
+    last_factor = number;
   }
+  
+  printf( "%d\n", last_factor );
   
   return 0;
 }
