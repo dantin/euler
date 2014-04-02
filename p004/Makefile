@@ -1,8 +1,14 @@
 CC=gcc
 CFLAGS=-std=c99
 
-palindrome_product: palindrome_product.c
+EXE=palindrome_product
+
+$(EXE): $(EXE).c
+
+.PHONY : test
+test : $(EXE)
+	./$(EXE)
 
 .PHONY : clean
 clean:
-	rm -f palindrome_product *~
+	rm -f $(EXE) *~
