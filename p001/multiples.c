@@ -2,18 +2,22 @@
 
 #define NUM1      3
 #define NUM2      5
-#define THRESHOLD 1000
+#define THRESHOLD 999
+
+int sum( const int n, const int limit );
 
 int main( void ) {
-  int total = 0;
-
-  for( int i = 1; i < THRESHOLD; i++ ) {
-    if( ( i % NUM1 == 0 ) || ( i % NUM2 == 0 ) ) {
-      total += i;
-    }
-  }
+  int total = sum( NUM1, THRESHOLD ) + sum( NUM2, THRESHOLD )
+    - sum( NUM1 * NUM2, THRESHOLD );
 
   printf( "%d\n", total );
 
   return 0;
+}
+
+int sum( const int n, const int limit )
+{
+  int len = limit / n;
+
+  return n * ( len * ( len + 1 ) ) / 2;
 }
