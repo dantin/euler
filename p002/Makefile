@@ -1,8 +1,14 @@
 CC=gcc
 CFLAGS=-std=c99
 
-fibonacci: fibonacci.c
+EXE=fibonacci
+
+$(EXE): $(EXE).c
+
+.PHONY : test
+test : $(EXE)
+	./$(EXE)
 
 .PHONY : clean
 clean:
-	rm -f fibonacci *~
+	rm -f $(EXE) *~
