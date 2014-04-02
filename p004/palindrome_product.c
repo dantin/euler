@@ -3,7 +3,7 @@
 #include <stdbool.h>
 
 #define LOW  100
-#define HIGH 1000
+#define HIGH 999
 
 unsigned int reverse( unsigned int number );
 bool is_palindrome( unsigned int number );
@@ -13,23 +13,24 @@ int main( void )
   unsigned int i, j;
 
   unsigned int max = 0;
-  for( i = HIGH - 1; i >= LOW; i-- ) {
+  for( i = HIGH; i >= LOW; i-- ) {
     unsigned int step;
 
     if( i % 11 == 0 ) {
       j = HIGH - 1;
       step = 1;
     } else {
-      j = 990;
+      j = 990; // largest number less than 999 and divisible by 11
       step = 11;
     }
-    for( ; j >= i; j -= step ) {
+    while( j >= i ) {
       if( i * j <= max ) {
 	break;
       }
       if( is_palindrome( i * j ) ) {
 	max = i * j;
       }
+      j -= step;
     }
   }
 
