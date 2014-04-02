@@ -1,7 +1,14 @@
 CC=gcc
 CFLAGS=-std=c99
-multiples: multiples.c
+
+EXE=multiples
+
+$(EXE): $(EXE).c
+
+.PHONY : test
+test : $(EXE)
+	./$(EXE)
 
 .PHONY : clean
 clean:
-	rm -f multiples *~
+	rm -f $(EXE) *~
