@@ -39,10 +39,9 @@ int main( void )
     lcm *= ( int )pow( primes->value, power );
     primes = primes->next;
   }
+  delete_list( &primes );
 
   printf( "%d\n", lcm );
-
-  delete_list( &primes );
 
   return 0;
 }
