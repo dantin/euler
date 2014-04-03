@@ -1,8 +1,14 @@
 CC=gcc
 CFLAGS=-std=c99 -lm
 
-smallest_multiple: smallest_multiple.c
+EXE=smallest_multiple
+
+$(EXE): $(EXE).c
+
+.PHONY : test
+test : $(EXE)
+	./$(EXE)
 
 .PHONY : clean
 clean:
-	rm -f smallest_multiple *~
+	rm -f $(EXE) *~
