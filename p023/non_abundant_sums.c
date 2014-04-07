@@ -1,16 +1,16 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+#define SIZE 28123
+
 int factor_sum( const int number );
-bool is_perfect( const int number );
-bool is_deficient( const int number );
 bool is_abundant( const int number );
 
 int main( void )
 {
   int i, j;
   long sum = 0;
-  for( i = 1; i < 28123; i++ ) {
+  for( i = 1; i <= 28123; i++ ) {
     bool found = false;
     for( j = 1; j < i; j++ ) {
       if( is_abundant( j ) && is_abundant( i - j ) ) {
@@ -39,16 +39,6 @@ int factor_sum( const int number )
   }
 
   return sum;
-}
-
-bool is_perfect( const int number )
-{
-  return number == factor_sum( number );
-}
-
-bool is_deficient( const int number )
-{
-  return number > factor_sum( number );
 }
 
 bool is_abundant( const int number )
